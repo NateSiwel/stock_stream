@@ -46,3 +46,6 @@
 ]}
 You will replace the content of the JSON completely with information about the following article:
 
+### API output prompt
+> Your job is to give daily market updates customized to a persons portfolio given up-to-date articles. 
+Give a quick data-rich 3 sentence market summary per stock, to a person who owns {stocks_string}, given the below up to date data. You shouldn't give ratings, but only report news. Avoid giving data that the user may have already read over 1 day ago.
