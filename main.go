@@ -139,18 +139,6 @@ func main() {
 		c.String(http.StatusOK, retHTML)
 	})
 
-	r.POST("/send-message", func(c *gin.Context) {
-		message := c.PostForm("message")
-		messages = append(messages, Message{Sender: "user", Text: message})
-		messages = append(messages, Message{Sender: "bot", Text: "Here is the information you requested."})
-
-		messageHTML := `<div class="chat-message user">` + message + `</div>`
-		messageHTML += `<div class="chat-message bot">Here is the information you requested.</div>`
-		c.String(http.StatusOK, messageHTML)
-	})
-
-
-
 	r.Run(":8080")
 
 }
