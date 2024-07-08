@@ -2,10 +2,12 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"github.com/lib/pq"
 	"time"
+	"net/http"
+	"github.com/gin-gonic/gin"
+	"strings"
 )
 
 type StockNews struct {
@@ -24,6 +26,17 @@ type StockSummaries struct {
 	Summary        string
 	Date	       time.Time
 
+}
+
+type Message struct {
+	Sender string
+	Text   string
+}
+
+var messages = []Message{
+	{Sender: "bot", Text: "Hello! How can I help you today?"},
+	{Sender: "user", Text: "I need some information on HTMX."},
+	{Sender: "bot", Text: "Okay, what can I help you with?"},
 }
 
 func fetchStockNews(db *sql.DB, tickers []string) ([]StockNews, error) {
@@ -109,21 +122,46 @@ func main() {
 	}
 	defer db.Close()
 
-	tickers := []string{"AAPL", "PYPL"}
+	r := gin.Default()
+	r.Static("/static", "./static")
+	r.LoadHTMLGlob("templates/*")
 
-	stockSummaries, err := fetchStockSummaries(db, tickers)
-	if err != nil {
-		log.Fatal(err)
-	}
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
 
-	fmt.Printf("User owns:")
-	for _, ticker := range tickers {
-	fmt.Printf(" %s", ticker)
-	}
-	fmt.Println()
+	r.GET("/load-summaries", func(c *gin.Context) {
+   	        tickersParam := c.Query("tickers")
+	        tickers := strings.Split(tickersParam, ",")
 
-	for _, summary := range stockSummaries {
-		fmt.Printf("Ticker: %s, Summary: %s\n", summary.Ticker, summary.Summary)
+		stockSummaries, err := fetchStockSummaries(db, tickers)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	}	
+		retHTML := ""
+		for index, summary := range stockSummaries{
+			retHTML += `<div id="summary-ticker">` + summary.Ticker+ `</div>`
+			retHTML += `<div id="summary-content">` + summary.Summary+ `</div>`
+			if index < len(stockSummaries)-1{
+				retHTML += `<hr style="height:1px;border-width:0;color:gray;background-color:rgb(224,224,224);width:50%;display:flex;align-items:center;">`
+			}
+		}
+		c.String(http.StatusOK, retHTML)
+	})
+
+	r.POST("/send-message", func(c *gin.Context) {
+		message := c.PostForm("message")
+		messages = append(messages, Message{Sender: "user", Text: message})
+		messages = append(messages, Message{Sender: "bot", Text: "Here is the information you requested."})
+
+		messageHTML := `<div class="chat-message user">` + message + `</div>`
+		messageHTML += `<div class="chat-message bot">Here is the information you requested.</div>`
+		c.String(http.StatusOK, messageHTML)
+	})
+
+
+
+	r.Run(":8080")
+
 }

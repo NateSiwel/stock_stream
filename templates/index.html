@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+</head>
+<body>
+    <div class="chat-app-container">
+	<div id="chat-container">
+		<p id="summary-title">What you should know</p>
+		<div hx-get="/load-summaries?tickers=PYPL,GOOG,AAPL,META" hx-trigger="load" hx-swap="innerHTML"></div>
+	</div>
+   </div>
+</body>
+</html>
