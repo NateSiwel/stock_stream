@@ -8,6 +8,7 @@
   - API should perform vector search on psql news data for past X timeframe to fetch context for LLM
   - pass news data to llm as context, instructing LLM to output the most important data for user considering their porfolio
   - return output to user - providing useful summary of news tailored for user. 
+- Lightweight HTMX frontend
 
 ### gpt article cleaner
  > I am going to ask you to return JSON data about an article in the following format w/ the following variables:

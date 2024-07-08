@@ -28,17 +28,6 @@ type StockSummaries struct {
 
 }
 
-type Message struct {
-	Sender string
-	Text   string
-}
-
-var messages = []Message{
-	{Sender: "bot", Text: "Hello! How can I help you today?"},
-	{Sender: "user", Text: "I need some information on HTMX."},
-	{Sender: "bot", Text: "Okay, what can I help you with?"},
-}
-
 func fetchStockNews(db *sql.DB, tickers []string) ([]StockNews, error) {
 	query := `
 		SELECT id, context, summary, news, tickers, date_published, title, link
