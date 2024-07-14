@@ -2,70 +2,76 @@ body, html {
     height: 100%;
     margin: 0;
     font-family: "Inter", Arial, sans-serif;
-    /*background-color: rgb(240,240,240);*/
     background-color: white;
     font-size: 1.0em;
 }
 
-.inter-font {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: <weight>; /* Replace <weight> with the desired font weight */
-  font-style: normal;
-  font-variation-settings:
-    "slnt" 0;
+.canvasjs-chart-credit {
+	display:none !important;
 }
 
-.chat-app-container {
+.app-container {
     display: flex;
-    flex-direction: column;
-    height: auto; 
+    flex-direction: row;
     max-width: 1100px;
     margin: 0 auto;
     padding: 10px;
     box-sizing: border-box;
+    gap: 10px;
+    align-items: flex-start;
 }
 
-#chat-container {
-    flex: 1; 
-    overflow-y: auto; 
-    border: 1px solid #ccc;
-    padding: 10px;
-    padding-bottom: 14px;
-    margin-bottom: 10px;
-    border-radius: 25px;
-    border: 1px solid rgb(224,224,224);
-    max-width:40%;
-}
-
-@media (max-width:700px){
-        #chat-container {
-	    flex: 1; 
-	    overflow-y: auto; 
-	    border: 1px solid #ccc;
-	    padding: 10px;
-	    padding-bottom: 14px;
-	    margin-bottom: 10px;
-	    border-radius: 25px;
-	    border: 1px solid rgb(224,224,224);
-	    max-width:100%;
-	}
-
+@media (max-width: 700px) {
+    .app-container {
+        flex-direction: column;
     }
 
+    #portfolio-news-container, 
+    #market-news-container {
+        max-width: 100%;
+    }
+}
+
+#portfolio-news-container, #market-news-container {
+    overflow-y: auto;
+    border: 1px solid rgb(224,224,224);
+    padding: 10px;
+    border-radius: 25px;
+}
+
+#portfolio-news-container {
+    flex: 1 1 40%;
+    display: inline-block;
+}
+
+#market-news-container {
+    flex: 1 1 60%;
+    display: inline-block;
+}
+
 #summary-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1.1em;
-  text-transform: capitalize;
+    display: flex;
+    font-variation-settings: 'wght' 700;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    text-transform: capitalize;
+    margin-top: 8px;
+    margin-bottom: 18px;
+}
+
+#summary-block {
+    background-color: rgb(240,240,240);
+    border-radius: 25px;
+    padding: 12px;
+    margin-top: 12px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 #summary-ticker {
-    font-weight: 600;
+    font-variation-settings: 'wght' 600;
     padding-top: 4px;
-    padding-bottom: 4px;
+    padding-bottom: 2px;
     padding-left: 10px;
     padding-right: 10px;
     font-size: 1.1em;
@@ -73,10 +79,12 @@ body, html {
 }
 
 #summary-content {
-    font-weight: 500;
+    display: flex;
+    font-weight: 600;
+    font-variation-settings: 'wght' 500;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 4px;
+    padding-top: 2px;
     padding-bottom: 4px;
     text-indent: 20px;
     color: rgb(50,50,50);

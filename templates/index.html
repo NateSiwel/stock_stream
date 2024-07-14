@@ -1,19 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Application</title>
-    <link rel="stylesheet" href="/static/css/styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Stock Stream</title>
+	<link rel="stylesheet" href="/static/css/styles.css" />
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+	<script src="https://unpkg.com/htmx.org@1.9.2"></script>
+	<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="https://cdn.canvasjs.com/canvasjs.stock.min.js"></script>
 </head>
 <body>
-    <div class="chat-app-container">
-	<div id="chat-container">
-		<p id="summary-title">What you should know</p>
+    <div class="app-container">
+	<div id="portfolio-news-container">
+		<p id="summary-title">Portfolio News</p>
 		<div hx-get="/load-summaries?tickers=PYPL,GOOG,AAPL,META" hx-trigger="load" hx-swap="innerHTML"></div>
 	</div>
-   </div>
+	<div id="market-news-container">
+		<div style="flex:1;">
+
+			<p id="summary-title">S&P 500 5d</p>
+			<div id="chartContainer" style="height: 350px; width: 100%;"></div>
+			
+			<div hx-get="/data" hx-trigger="load" hx-swap="none" hx-target="#chartContainer" hx-ext="json-templates"></div>
+			{{ range .marketNews }}
+			
+				<div id="summary-block"><div id="summary-content">{{ .Summary }}</div></div>
+			{{ end }}
+		</div>
+	</div>   
+    </div>
+    <script type="text/javascript">
+	document.body.addEventListener('htmx:afterSwap', function(evt) {
+	    if (evt.detail.target.id === 'chartContainer') {
+		$.get("/data", function(dataPoints) {
+		    var stockChart = new CanvasJS.StockChart("chartContainer", {
+		        title: {
+			    text: ""
+		        },
+		        animationEnabled: true,
+		        exportEnabled: true,
+		        charts: [{
+			    axisX: {
+			        crosshair: {
+				    enabled: true,
+				    snapToDataPoint: true
+			        }
+			    },
+			    axisY: {
+			        crosshair: {
+				    enabled: true,
+			        }
+			    },
+			    data: [{
+			        type: "spline",
+			        dataPoints: dataPoints
+			    }]
+		        }],
+		        rangeSelector: {
+			    inputFields: {
+			        startValue: 4000,
+			        endValue: 6000,
+			        valueFormatString: "###0"
+			    },
+			    buttons: [{
+			        label: "1000",
+			        range: 1000,
+			        rangeType: "number"
+			    }, {
+			        label: "2000",
+			        range: 2000,
+			        rangeType: "number"
+			    }, {
+			        label: "5000",
+			        range: 5000,
+			        rangeType: "number"
+			    }, {
+			        label: "All",
+			        rangeType: "all"
+			    }]
+		        }
+		    });
+		    stockChart.render();
+		});
+	    }
+	});
+    </script>
 </body>
 </html>

@@ -50,3 +50,5 @@ You will replace the content of the JSON completely with information about the f
 ### API output prompt
 > Your job is to give daily market updates customized to a persons portfolio given up-to-date articles. 
 Give a quick data-rich 3 sentence market summary per stock, to a person who owns {stocks_string}, given the below up to date data. You shouldn't give ratings, but only report news. Avoid giving data that the user may have already read over 1 day ago.
+
+> Your job is to give daily market updates for the general market based on up-to-date articles. Provide a concise, data-rich six-sentence market summary that covers major indices, key economic indicators, and significant market-moving events or trends. Avoid repeating information from articles that are over one day old and focus on the most current news and data. Return output in {"thinking":"", "daily_market_summary":""} format. You may plan out your article in thinking.
